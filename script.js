@@ -126,3 +126,38 @@ navLinks.forEach(link => {
     }
   });
 });
+/* ── 5. CERTIFICATE LIGHTBOX ── */
+const certCards = document.querySelectorAll('.cert-hover-trigger, .cert-card');
+const lightbox = document.getElementById('cert-lightbox');
+const lightboxImg = document.getElementById('lightbox-img');
+
+if (certCards && lightbox && lightboxImg) {
+  certCards.forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      // Find the image source from the specific card
+      let imgSrc = '';
+
+      // For Experience/Internship card
+      if (card.classList.contains('exp-card')) {
+        imgSrc = 'internship.png';
+      }
+      // For Zscaler Certification
+      else if (card.innerText.includes('Zscaler')) {
+        imgSrc = 'global_cert.png';
+      }
+      // For Oracle Certification
+      else if (card.innerText.includes('Oracle')) {
+        imgSrc = 'Oracle.png';
+      }
+
+      if (imgSrc) {
+        lightboxImg.src = imgSrc;
+        lightbox.classList.add('active');
+      }
+    });
+
+    card.addEventListener('mouseleave', () => {
+      lightbox.classList.remove('active');
+    });
+  });
+}
