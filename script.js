@@ -127,37 +127,60 @@ navLinks.forEach(link => {
   });
 });
 /* ── 5. CERTIFICATE LIGHTBOX ── */
-const certCards = document.querySelectorAll('.cert-hover-trigger, .cert-card');
+const viewCertBtns = document.querySelectorAll('.view-cert-btn');
 const lightbox = document.getElementById('cert-lightbox');
 const lightboxImg = document.getElementById('lightbox-img');
 
-if (certCards && lightbox && lightboxImg) {
-  certCards.forEach(card => {
-    card.addEventListener('mouseenter', () => {
-      // Find the image source from the specific card
-      let imgSrc = '';
-
-      // For Experience/Internship card
-      if (card.classList.contains('exp-card')) {
-        imgSrc = 'internship.png';
-      }
-      // For Zscaler Certification
-      else if (card.innerText.includes('Zscaler')) {
-        imgSrc = 'global_cert.png';
-      }
-      // For Oracle Certification
-      else if (card.innerText.includes('Oracle')) {
-        imgSrc = 'Oracle.png';
-      }
-
+if (viewCertBtns && lightbox && lightboxImg) {
+  viewCertBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const imgSrc = btn.getAttribute('data-cert');
       if (imgSrc) {
         lightboxImg.src = imgSrc;
         lightbox.classList.add('active');
       }
     });
+  });
 
-    card.addEventListener('mouseleave', () => {
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) {
       lightbox.classList.remove('active');
+    }
+  });
+}
+
+/* ── 6. PROJECT GALLERY MODAL ── */
+const galleryLightbox = document.getElementById('project-gallery-lightbox');
+const galleryBtns = document.querySelectorAll('.project-gallery-btn');
+const closeGallery = document.querySelector('.close-gallery');
+
+if (galleryLightbox && galleryBtns && closeGallery) {
+  galleryBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      galleryLightbox.classList.add('active');
+      document.body.style.overflow = 'hidden'; // Prevent scrolling
     });
+  });
+
+  closeGallery.addEventListener('click', () => {
+    galleryLightbox.classList.remove('active');
+    document.body.style.overflow = ''; // Restore scrolling
+  });
+
+  // Close on outside click
+  galleryLightbox.addEventListener('click', (e) => {
+    if (e.target === galleryLightbox) {
+      galleryLightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && galleryLightbox.classList.contains('active')) {
+      galleryLightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    }
   });
 }
